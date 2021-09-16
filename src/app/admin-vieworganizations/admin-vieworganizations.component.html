@@ -1,0 +1,72 @@
+<mat-toolbar class="mat-elevation-z8">
+    <button mat-icon-button *ngIf="sidenav.mode === 'over'" (click)="sidenav.toggle()">
+        <mat-icon *ngIf="!sidenav.opened">
+            menu
+        </mat-icon>
+        <mat-icon *ngIf="sidenav.opened">
+            close
+        </mat-icon>
+    </button>
+
+    <span><a class="linkstyle" [routerLink]="['/']" style="font-size: xx-large;">PickMyVote</a></span>
+    <span class="navbarselections"></span>
+
+    <div class="topnav">
+        <a class="active" (click)="logout()">
+            <mat-icon>logout</mat-icon>
+        </a>
+    </div>
+</mat-toolbar>
+
+<mat-sidenav-container>
+    <mat-sidenav #sidenav="matSidenav" mode="side" opened>
+
+        <button mat-button class="menu-button active">
+            <mat-icon>home</mat-icon>
+            <span><a [routerLink]="['/admin']">Home</a></span>
+        </button>
+        <button mat-button class="menu-button">
+            <mat-icon>person</mat-icon>
+            <span><a [routerLink]="['/admin/profile']">Profile</a></span>
+        </button>
+        <button mat-button class="menu-button">
+            <mat-icon>done</mat-icon>
+            <span><a [routerLink]="['/admin/viewElections']">Elections</a></span>
+        </button>
+
+        <button mat-button class="menu-button">
+            <mat-icon>corporate_fare</mat-icon>
+            <span><a [routerLink]="['/admin/viewOrganizations']">Organizations</a></span>
+        </button>
+
+        <mat-divider></mat-divider>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+        <div class="content mat-elevation-z8" style="overflow: auto">
+            <div class="topic">
+                <h2>Organizations</h2>
+            </div><br>
+            <table class = "table table-striped">
+                <thead>
+                    <tr>
+                        <th> Organization Id </th>
+                        <th> Organization Name </th>
+                        <th> Type </th>
+                        <th> Notices </th>
+                        <th> Owner Id </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor = "let organizations of organizations">
+                        <td> {{ organizations.id }} </td>
+                        <td> {{ organizations.name }} </td>
+                        <td> {{ organizations.type }} </td>
+                        <td> {{ organizations.notices }} </td>
+                        <td> {{ organizations.ownerID}} </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </mat-sidenav-content>
+</mat-sidenav-container>

@@ -1,0 +1,78 @@
+<mat-toolbar class="mat-elevation-z8">
+    <button mat-icon-button *ngIf="sidenav.mode === 'over'" (click)="sidenav.toggle()">
+        <mat-icon *ngIf="!sidenav.opened">
+            menu
+        </mat-icon>
+        <mat-icon *ngIf="sidenav.opened">
+            close
+        </mat-icon>
+    </button>
+
+    <span><a class="linkstyle" [routerLink]="['/']" style="font-size: xx-large;">PickMyVote</a></span>
+    <span class="navbarselections"></span>
+
+    <div class="topnav">
+        <a class="active" (click)="logout()">
+            <mat-icon>logout</mat-icon>
+        </a>
+    </div>
+</mat-toolbar>
+
+<mat-sidenav-container>
+    <mat-sidenav #sidenav="matSidenav" mode="side" opened>
+
+        <button mat-button class="menu-button active">
+            <mat-icon>home</mat-icon>
+            <span><a [routerLink]="['/admin']">Home</a></span>
+        </button>
+        <button mat-button class="menu-button">
+            <mat-icon>person</mat-icon>
+            <span><a [routerLink]="['/admin/profile']">Profile</a></span>
+        </button>
+        <button mat-button class="menu-button">
+            <mat-icon>done</mat-icon>
+            <span><a [routerLink]="['/admin/viewElections']">Elections</a></span>
+        </button>
+
+        <button mat-button class="menu-button">
+            <mat-icon>corporate_fare</mat-icon>
+            <span><a [routerLink]="['/admin/viewOrganizations']">Organizations</a></span>
+        </button>
+
+        <mat-divider></mat-divider>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+        <div class="content mat-elevation-z8" style="overflow: auto">
+            <div class="topic">
+                <h2>Elections</h2>
+            </div><br>
+            <table class = "table table-striped">
+                <thead>
+                    <tr>
+                        <th> Election Id </th>
+                        <th> Election Title </th>
+                        <th> Start Date & Time </th>
+                        <th> End Date & Time </th>
+                        <th> Capacity </th>
+                        <th> Type </th>
+                        <th> organization </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor = "let elections of elections">
+                        <td> {{ elections.id }} </td>
+                        <td> {{ elections.title }} </td>
+                        <td> {{ elections.startdatetime }} </td>
+                        <td> {{ elections.enddatetime }} </td>
+                        <td> {{ elections.capacity }} </td>
+                        <td *ngIf="elections.type == 1"> Secure Election </td>
+                        <td *ngIf="elections.type == 0"> Public Election </td>
+                        <td> {{ elections.orgname}} </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </mat-sidenav-content>
+</mat-sidenav-container>
+<!--  -->
