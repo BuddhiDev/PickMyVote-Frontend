@@ -13,12 +13,12 @@ export class UserelectionService {
 
   getOrganizations(username:any,password:any,userid:number):Observable<OrgSubscribedUser[]>{
     const headers = new HttpHeaders({ Authorization: 'Basic ' + btoa(username + ':' + password) });
-    return this._http.get<OrgSubscribedUser[]>("http://localhost:8080/userorganizations/"+userid,{headers})
+    return this._http.get<OrgSubscribedUser[]>("https://pickmyvote.herokuapp.com/userorganizations/"+userid,{headers})
   }
 
   getelections(username:any,password:any,orgid:number):Observable<Election[]>{
     const headers = new HttpHeaders({ Authorization: 'Basic ' + btoa(username + ':' + password) });
-    return this._http.get<Election[]>("http://localhost:8080/userelection/"+orgid,{headers})
+    return this._http.get<Election[]>("https://pickmyvote.herokuapp.com/userelection/"+orgid,{headers})
   }
 
 }

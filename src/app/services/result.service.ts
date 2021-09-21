@@ -12,7 +12,7 @@ export class ResultService {
 
   getResult(username:any,password:any,elecid:number):Observable<Candidate[]>{
     const headers = new HttpHeaders({ Authorization: 'Basic ' + btoa(username + ':' + password) });
-    return this._http.get<Candidate[]>("http://localhost:8080/results/"+elecid,{headers})
+    return this._http.get<Candidate[]>("https://pickmyvote.herokuapp.com/results/"+elecid,{headers})
   }
 
 }

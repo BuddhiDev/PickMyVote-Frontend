@@ -12,6 +12,6 @@ export class PaymentService {
 
   getPayment(username:any,password:any):Observable<Payment[]>{
     const headers = new HttpHeaders({ Authorization: 'Basic ' + btoa(username + ':' + password) });
-    return this._http.get<Payment[]>("http://localhost:8080/getPayments/",{headers})
+    return this._http.get<Payment[]>("https://pickmyvote.herokuapp.com/getPayments/",{headers})
   }
 }
