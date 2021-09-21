@@ -13,28 +13,26 @@ import { User } from '../user';
 import { VoteService } from '../vote.service';
 
 @Component({
-  selector: 'app-result',
-  templateUrl: './result.component.html',
-  styleUrls: ['./result.component.css']
+  selector: 'app-userresult',
+  templateUrl: './userresult.component.html',
+  styleUrls: ['./userresult.component.css']
 })
-export class ResultComponent implements OnInit {
+export class UserresultComponent implements OnInit {
 
   email = sessionStorage.getItem('session_username');
-  uid = sessionStorage.getItem('session_uid');
   password = sessionStorage.getItem('session_password');
   //candidates = Candidate:[];
   List!: Array<Candidate>;
-  elecObj: Election = new Election();
-  orgObj: Organization = new Organization();
-  invited_voters!: Array<InvisVote>;
   valid_voters: number = 0;
+  invited_voters!: Array<InvisVote>;
+  votes:any[] = [];
   candidateObj: Candidate[];
   tmpcandidateObj: Candidate[];
   positions: Array<Positions>=[];
-
-  votes:any[] = [];
+  elecObj: Election = new Election();
+  orgObj: Organization = new Organization();
   names:any[] = [];
-  user = new User;
+  user=new User
 
   pie_valid_voters:any[]= [];
   // ADD CHART OPTIONS. 
@@ -71,14 +69,11 @@ export class ResultComponent implements OnInit {
       backgroundColor: ['rgba(13, 11, 147,0.2)','rgba(190, 14, 20,0.2)']
     }
   ]
-
-  
-
-
-  constructor(private Reg_service: RegistrationService,private vote_service: VoteService, private Res_service: ResultService, private _router : Router, private _route: ActivatedRoute, private elec_service: ElectionService, private org_service: OrganizationService) { }
+  constructor(private vote_service: VoteService,private Reg_service: RegistrationService, private Res_service: ResultService, private _router : Router, private _route: ActivatedRoute,private elec_service: ElectionService, private org_service: OrganizationService) { }
 
   ngOnInit(): void {
 
+    
     this.email = sessionStorage.getItem('session_username');
     this.password = sessionStorage.getItem('session_password');
     const id = this._route.snapshot.params['elecid'];
@@ -171,25 +166,10 @@ export class ResultComponent implements OnInit {
       } 
     )
 
-  }
+    
 
-  viewHome(){
-    this._router.navigate(['/userprofile', this.uid]);
   }
-
-  viewUser() {
-    this._router.navigate(['/edituser', this.uid]);
-  }
-
-  viewElection() {
-    this._router.navigate(['/elections', this.uid]);
-  }
-
-  viewOrganization() {
-    this._router.navigate(['/organization', this.uid]);
-  }
-
-  userprofile(){
+  logout(){
     this.Reg_service.getUserbyEmail(this.email,this.password,this.email).subscribe(
       res =>{
         this.user = res;
@@ -199,5 +179,15 @@ export class ResultComponent implements OnInit {
     
   }
 
+  userprofile(){
+    this.Reg_service.getUserbyEmail(this.email,this.password,this.email).subscribe(
+      res =>{
+        this.user = res;
+        console.log( this.user.id);
+        this._router.navigate(['/elections',this.user.id ]);
+      })
+    
+  }
 }
+
 

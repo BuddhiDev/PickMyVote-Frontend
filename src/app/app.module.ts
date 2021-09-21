@@ -60,6 +60,12 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import { DatePipe } from '@angular/common';
 import { NewPasswordValidatorDirective } from './adminprofile/new-password-validator.directive';
 import { EncrDecrServiceService } from './services/encr-decr-service.service';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatRadioModule} from '@angular/material/radio';
+import { FooterComponent } from './footer/footer.component';
+import { UserresultComponent } from './userresult/userresult.component';
+import { OrgelectionsComponent } from './orgelections/orgelections.component';
+import { OrgelecresultComponent } from './orgelecresult/orgelecresult.component';
 
 
 @NgModule({
@@ -95,7 +101,11 @@ import { EncrDecrServiceService } from './services/encr-decr-service.service';
     Votepage5Component,
     RegistrationverifyComponent,
     AdminprofileComponent,
-    NewPasswordValidatorDirective
+    NewPasswordValidatorDirective,
+    FooterComponent,
+    UserresultComponent,
+    OrgelectionsComponent,
+    OrgelecresultComponent
   ],
   imports: [
     BrowserModule,
@@ -117,7 +127,9 @@ import { EncrDecrServiceService } from './services/encr-decr-service.service';
     MatStepperModule,
     MatSelectModule,
     ChartsModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    MatExpansionModule,
+    MatRadioModule
   ],
   providers: [RegistrationService,ResultService,VoteService,DatePipe,EncrDecrServiceService],
   bootstrap: [AppComponent]

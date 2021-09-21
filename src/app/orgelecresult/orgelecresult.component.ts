@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Candidate } from '../candidate';
 import { Election } from '../election';
 import { ElectionService } from '../election.service';
@@ -13,11 +13,11 @@ import { User } from '../user';
 import { VoteService } from '../vote.service';
 
 @Component({
-  selector: 'app-result',
-  templateUrl: './result.component.html',
-  styleUrls: ['./result.component.css']
+  selector: 'app-orgelecresult',
+  templateUrl: './orgelecresult.component.html',
+  styleUrls: ['./orgelecresult.component.css']
 })
-export class ResultComponent implements OnInit {
+export class OrgelecresultComponent implements OnInit {
 
   email = sessionStorage.getItem('session_username');
   uid = sessionStorage.getItem('session_uid');
@@ -35,6 +35,7 @@ export class ResultComponent implements OnInit {
   votes:any[] = [];
   names:any[] = [];
   user = new User;
+  elec = new Election;
 
   pie_valid_voters:any[]= [];
   // ADD CHART OPTIONS. 
@@ -190,14 +191,17 @@ export class ResultComponent implements OnInit {
   }
 
   userprofile(){
-    this.Reg_service.getUserbyEmail(this.email,this.password,this.email).subscribe(
+    
+    const eid = this._route.snapshot.params['elecid'];
+    console.log("eid");
+    console.log(eid);
+    this.elec_service.getElectionById(this.email,this.password,eid).subscribe(
       res =>{
-        this.user = res;
-        console.log( this.user.id);
-        this._router.navigate(['/userprofile',this.user.id ]);
+        this.elec = res;
+        console.log(this.elec.orgid);
+        this._router.navigate(['/orgelections',this.elec.orgid]);
       })
     
   }
 
 }
-

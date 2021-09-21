@@ -1,3 +1,58 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Philosopher:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Patua+One&display=swap');
+
+/* Toolbar css */
+mat-toolbar {
+    background-color: #130335;
+    color: white;
+    font-family: 'Josefin Sans', sans-serif;
+}
+
+.linkstyle {
+    color: white;
+    font-family: 'Philosopher', sans-serif;
+    text-decoration: none;
+}
+
+.linkstyle:hover {
+    color: white;
+}
+
+.navbarselections {
+    flex: 1 1 auto;
+}
+
+.topnav {
+    /* background-color: #333; */
+    overflow: hidden;
+}
+
+/* Style the links inside the navigation bar */
+
+.topnav a {
+    float: left;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+/* Change the color of links on hover */
+
+.topnav a:hover {
+    background-color: rgb(89, 99, 124);
+    color: black;
+}
+
+/* Add a color to the active/current link */
+
+.topnav a.active {
+    color: white;
+}
+
 @import url('https://fonts.googleapis.com/css2?family=Philosopher:wght@700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;600&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Patua+One&display=swap');
@@ -139,62 +194,24 @@ mat-divider {
     margin-bottom: 16px;
     background-color: rgba(255, 255, 255, 0.5);
 }
-
-.sidelinkstyle {
-    color: white;
-    font-family: Roboto, "Helvetica Neue", sans-serif;
-    font-size: 16px;
-    font-weight: 500;
-    text-decoration: none;
-}
-
-/* Edit User Form CSS */
-.edituserform {
-    color: #130335;
-    font-weight: bold;
-    font-family: 'Patua One', cursive;
-}
-
-.form-control {
-    font-family: 'Josefin Sans', sans-serif;
-    font-weight: bold;
-}
-
-.col-form-label {
-    font-weight: bold;
-}
-
-.btn {
-    font-family: 'Patua One', cursive;
-    background-color: #130335;
-    color: white;
-}
-
-.btn:hover {
-    color: #130227;
-    background-color: #9b9a9c;
-    font-weight: bold;
-    border: 1px solid#5b5a5c;
-}
-
-label {
-    font-size: large;
-}
-
-small {
-    font-size: small;
-}
-
-strong {
-    font-size: small;
-}
-
-span {
-    font-family: 'Josefin Sans', sans-serif;
-    font-size: large;
-    color: #212529;
-}
-
 p {
-    font-size: small;
+  color: #130335;
+  font-size: 30px;
+  font-family: 'Patua One', cursive;
 }
+
+.row {
+  width: 100%;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Philosopher:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Patua+One&display=swap');
+
+mat-grid-tile {
+    background-color: #C4C4C4;
+    text-align: left;
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 17px;
+    color: #130335;
+  }

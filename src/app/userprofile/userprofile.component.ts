@@ -8,6 +8,9 @@ import { Election } from '../election';
 import { ElectionService } from '../election.service';
 import { OrganizationService } from '../services/organization.service';
 import { Organization } from '../organization';
+import { VoteService } from '../vote.service';
+import { InvisVote } from '../invis-vote';
+import { DatePipe } from '@angular/common';
 @Component({
   selector: 'app-userprofile',
   templateUrl: './userprofile.component.html',
@@ -22,7 +25,7 @@ export class UserprofileComponent implements OnInit {
   password = sessionStorage.getItem('session_password');
   uRole = sessionStorage.getItem('user_role');
 
-  constructor(private UserElc_service: UserelectionService, private _router: Router, private _route: ActivatedRoute, private Election_service: ElectionService,private Organization_service: OrganizationService) { }
+  constructor(public datepipe: DatePipe,private UserElc_service: UserelectionService, private _router: Router, private _route: ActivatedRoute, private Election_service: ElectionService,private Organization_service: OrganizationService,private Vote_service: VoteService) { }
 
   organizations: OrgSubscribedUser[] = [];
   elections: Election[][] = [];
@@ -30,7 +33,10 @@ export class UserprofileComponent implements OnInit {
   oranizationname = '';
   notice = '';
   org: Organization[] = [];
-
+  invisvote :InvisVote[]=[];
+  election : Election[] = [];
+  elecclose : Election[] = [];
+  
   ngOnInit(): void {
 
     //check browser session for admin login
@@ -39,6 +45,36 @@ export class UserprofileComponent implements OnInit {
 
     }
     this.getElections();
+
+    this.Vote_service.getInvisVoteByEmail(this.email,this.password).subscribe(
+      data => {
+        this.invisvote = data;
+        console.log(this.invisvote);
+        // this.invisvote.forEach((el) => {
+        //   console.log(el.elecID);
+        // })
+        let k=0;
+        for(let i=0;i<this.invisvote.length;i++){
+          console.log(this.invisvote[i].elecID);
+          this.Election_service.getElectionById(this.email,this.password,this.invisvote[i].elecID).subscribe(
+            data1 => {
+              this.election[i] = data1;
+              let currentDate = new Date();
+              let latest_date = this.datepipe.transform(currentDate, 'yyyy-MM-dd HH:mm:ss');
+              if(latest_date){
+                if (latest_date > this.election[i].enddatetime) {
+                  this.elecclose[k] = this.election[i];
+                  k++;
+                 
+                }
+              }
+            }
+
+         // this._router.navigate(['/result', this.invisvote[i].elecID]);
+          )
+        }
+      }
+    )
 
   }
 
@@ -75,6 +111,11 @@ export class UserprofileComponent implements OnInit {
     this._router.navigate(['/organization', id]);
   }
 
+  viewResult(id:number) {
+    
+    this._router.navigate(['/result', id]);
+  }
+
   logout(){
     sessionStorage.clear();
     this._router.navigate(['/']);
@@ -89,6 +130,7 @@ export class UserprofileComponent implements OnInit {
         let k =0;
           for(let i = 0; i <= this.organizations.length; i++) {
             this.elections[i] = [];
+            
 
             this.Organization_service.getOrganizationName(this.email,this.password, res[i].orgid).subscribe(
               name => {
@@ -118,5 +160,7 @@ export class UserprofileComponent implements OnInit {
       }
     );
   }
+
+
 
 }

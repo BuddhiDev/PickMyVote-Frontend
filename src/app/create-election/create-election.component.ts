@@ -9,6 +9,7 @@ import { Payment } from '../payment';
 import { DatePipe } from '@angular/common';
 import { Candidate } from '../candidate';
 import { Voter } from '../voter.model';
+import { EncrDecrServiceService } from '../services/encr-decr-service.service';
 
 @Component({
   selector: 'app-create-election',
@@ -44,13 +45,29 @@ export class CreateElectionComponent implements OnInit {
   newVotersArray : Array<Voter> = [];
   voterEmail : string;
 
+  newKeyArray : Array<Voter> = [];
+  emailEncrypt : string;
+
   csvFile : File;
 
-  constructor(private _service: ElectionService, private _router : Router, private _route: ActivatedRoute, private _formBuilder: FormBuilder,public datepipe: DatePipe) { }
+  panelOpenState = false;
+
+  hiddenVariable = "d-none";
+  userId = 0;
+
+  electionVotersCapacity = 0;
+
+  electionCapacityValidationBorderColor = "";
+  electionCapacityValidationText = "d-none";
+
+  hiddenVariableVoterCountError = "d-none";
+
+  constructor(private _service: ElectionService, private _router : Router, private _route: ActivatedRoute, private _formBuilder: FormBuilder,public datepipe: DatePipe,private EncrDecr: EncrDecrServiceService) { }
 
   ngOnInit(): void {
 
     const id = this._route.snapshot.params['id'];
+    this.userId = id;
     //console.log(id);
 
     this.getOrganization(this.username, this.password, id)
@@ -84,15 +101,24 @@ export class CreateElectionComponent implements OnInit {
 
   createNewElection(username:any, password:any){
     //console.log(this.newElection);
-    this._service.createNewElection(username, password, this.newElection).subscribe(data => {
-      this.newElecId = data.id;
-      this.newElecType = data.type;
-      console.log(data);
-    },
-    error => console.log(error));
+    if(this.newVotersArray.length <= this.electionVotersCapacity){
+      this._service.createNewElection(username, password, this.newElection).subscribe(data => {
+        this.newElecId = data.id;
+        this.newElecType = data.type;
+        console.log(data);
+  
+        this.createNewPayment(username,password);
+      },
+      error => console.log(error));
+    }
+    else{
+      console.log("voter count error");
+      this.hiddenVariableVoterCountError = "";
+    }   
   }
 
   createNewPayment(username:any, password:any){
+    console.log(this.newElecId);
     if(this.newElecId != 0){
       if(this.newElecType == 1){
         this.newPayment.amount = 8;
@@ -113,13 +139,14 @@ export class CreateElectionComponent implements OnInit {
       },
       error => console.log(error));
     }
+
+    this.createNewCandidates(username,password)
   }
 
   addCandidate(cName:string, cPosition:string){
     let cd = new Candidate();
     cd.name = cName;
     cd.position = cPosition;
-    cd.elecid = this.newElecId;
     this.newCandidatesArray.push(cd);
     //console.log(this.newCandidatesArray);
     this.candidateName = ""; this.candidatePosition = "";
@@ -130,10 +157,16 @@ export class CreateElectionComponent implements OnInit {
   }
 
   createNewCandidates(username:any, password:any){
+    for (var candidate of this.newCandidatesArray) {
+      candidate.elecid = this.newElecId;
+    }
+
     this._service.createNewCandidates(username, password, this.newCandidatesArray).subscribe(data => {
       console.log(data);
     },
     error => console.log(error));
+
+    this.createNewVoters(username,password)
   }
 
   //new Voters add functions for the election
@@ -141,6 +174,7 @@ export class CreateElectionComponent implements OnInit {
     let nv = new Voter();
     nv.emkey = voterEmail;
     nv.elecID = this.newElecId;
+    nv.privateKey = this.EncrDecr.set('123456$#@$^@1ERF', nv.emkey);
     nv.count  = 0;
     this.newVotersArray.push(nv);
     this.voterEmail = "";
@@ -169,7 +203,8 @@ export class CreateElectionComponent implements OnInit {
         //console.log(oneEmail)
         let nv = new Voter();
         nv.emkey = oneEmail;
-        nv.elecID = this.newElecId;
+        console.log(nv.emkey);
+        nv.privateKey = this.EncrDecr.set('123456$#@$^@1ERF', nv.emkey);
         nv.count  = 0;
         this.newVotersArray.push(nv);
       }
@@ -177,10 +212,47 @@ export class CreateElectionComponent implements OnInit {
   }
 
   createNewVoters(username:any, password:any){
+
+    for (var voter of this.newVotersArray) {
+      voter.elecID = this.newElecId;
+    }
+
     this._service.createNewVoters(username, password, this.newVotersArray).subscribe(data => {
       console.log(data);
+    
     },
     error => console.log(error));
+
+    this.hiddenVariable = ""; //for show the election creation success messaged
   }
 
+  electionCreationFinishAndGoBackEle(){
+    this._router.navigate(['/elections',this.userId])
+  }
+
+  selectElectionAndPressNextButton(){
+    if(this.newElection.type == 1){
+      this.electionVotersCapacity = 500;
+    }
+    else if(this.newElection.type == 2){
+      this.electionVotersCapacity = 1000;
+    }
+
+    console.log(this.electionVotersCapacity)
+  }
+
+  electionCapacityInputValidation(){
+    if(this.newElection.capacity > this.electionVotersCapacity){
+      this.electionCapacityValidationBorderColor = "warn";
+      this.electionCapacityValidationText = "ms-2 text-danger";
+    }
+    else{
+      this.electionCapacityValidationBorderColor = "";
+      this.electionCapacityValidationText = "d-none";
+    }
+  }
+
+  electionFinishVoterCountError(){
+    this.hiddenVariableVoterCountError = "d-none";
+  }
 }
