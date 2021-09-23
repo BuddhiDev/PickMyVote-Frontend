@@ -1,6 +1,7 @@
 import { HttpHeaders,HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { GlobalComponent } from './global/global.component';
 import { InvisVote } from './invis-vote';
 import { Votes } from './votes';
 
@@ -14,26 +15,26 @@ export class VoteService {
 
   getElectionDetails(username:any,password:any,id:Number):Observable<any>{
     const headers = new HttpHeaders({ Authorization: 'Basic ' + btoa(username + ':' + password) });
-    return this._http.get<Votes>("https://pickmyvote.herokuapp.com/vote/"+id,{headers});
+    return this._http.get<Votes>(GlobalComponent.api_origin+"vote/"+id,{headers});
   }
 
   getInvisVote(username:any,password:any,emkey_decrypted:any,elecid:any):Observable<any>{
     const headers = new HttpHeaders({ Authorization: 'Basic ' + btoa(username + ':' + password) });
-    return this._http.get<any>("https://pickmyvote.herokuapp.com/vote/"+ emkey_decrypted + "/" + elecid, {headers});
+    return this._http.get<any>(GlobalComponent.api_origin+"vote/"+ emkey_decrypted + "/" + elecid, {headers});
   }
 
   addVote(username:any,password:any,emkey_decrypted:any,elecid:any,candidateid:any):Observable<any>{
     const headers = new HttpHeaders({ Authorization: 'Basic ' + btoa(username + ':' + password) });
-    return this._http.get<any>("https://pickmyvote.herokuapp.com/vote/add/"+ emkey_decrypted + "/" + elecid + "/" + candidateid,{headers});
+    return this._http.get<any>(GlobalComponent.api_origin+"/vote/add/"+ emkey_decrypted + "/" + elecid + "/" + candidateid,{headers});
   }
 
   getInvisVoteByEmail(username:any,password:any):Observable<InvisVote[]>{
     const headers = new HttpHeaders({ Authorization: 'Basic ' + btoa(username + ':' + password) });
-    return this._http.get<InvisVote[]>("https://pickmyvote.herokuapp.com/vote/getelections/"+username,{headers});
+    return this._http.get<InvisVote[]>(GlobalComponent.api_origin+"vote/getelections/"+username,{headers});
   }
 
   getTotalVoters(username:any,password:any,elecid:any):Observable<InvisVote[]>{
     const headers = new HttpHeaders({ Authorization: 'Basic ' + btoa(username + ':' + password) });
-    return this._http.get<InvisVote[]>("https://pickmyvote.herokuapp.com/vote/getvoters/"+elecid,{headers});
+    return this._http.get<InvisVote[]>(GlobalComponent.api_origin+"vote/getvoters/"+elecid,{headers});
   }
 }

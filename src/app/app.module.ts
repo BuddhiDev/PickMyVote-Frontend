@@ -66,6 +66,7 @@ import { FooterComponent } from './footer/footer.component';
 import { UserresultComponent } from './userresult/userresult.component';
 import { OrgelectionsComponent } from './orgelections/orgelections.component';
 import { OrgelecresultComponent } from './orgelecresult/orgelecresult.component';
+import { GlobalComponent } from './global/global.component';
 
 
 @NgModule({
@@ -105,7 +106,8 @@ import { OrgelecresultComponent } from './orgelecresult/orgelecresult.component'
     FooterComponent,
     UserresultComponent,
     OrgelectionsComponent,
-    OrgelecresultComponent
+    OrgelecresultComponent,
+    GlobalComponent
   ],
   imports: [
     BrowserModule,
